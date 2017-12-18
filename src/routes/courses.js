@@ -48,6 +48,7 @@ router.post("/", mid.requiresLogin, (req, res, next) => {
     let course = new Course(req.body);
     course.save(function(err, course){
         if(err){
+            res.status(400);
             return next(err);
         } else {
             res.location('/');
@@ -60,6 +61,7 @@ router.post("/", mid.requiresLogin, (req, res, next) => {
 router.put("/:courseId", mid.requiresLogin, (req,res,next) => {
     req.course.update(req.body, function(err,result){
         if(err){
+            res.status(400);
             return next(err);
         } else {
             res.status(201).json();
@@ -70,13 +72,17 @@ router.put("/:courseId", mid.requiresLogin, (req,res,next) => {
 // POST /api/courses/:courseId/reviews 201 - Creates a review for the specified course ID, 
 // sets the Location header to the related course, and returns no content
 router.post("/:courseId/reviews", mid.requiresLogin, (req,res,next) => {
-    req.course.reviews.push(req.body);
-    req.course.save(function(err,course){
-        if(err) return next(err);
-        res.location('/');
-        res.status(201).json();
+    new Review(req.body)
+    .save(function(err,review){
+        if(err){
+            res.status(400);
+            return next(err);
+        } else {
+            res.location('/');
+            res.status(201).json();
+        }
     })
-})
+});
 
 
 module.exports = router;

@@ -7,7 +7,7 @@ const ReviewSchema = new mongoose.Schema({
     },
     postedOn: {
         type: Date, 
-        default: Date.now
+        default: Date.now()
     },
     rating: {
         type: Number,
@@ -21,5 +21,5 @@ const ReviewSchema = new mongoose.Schema({
 
 });
 
-let Review = mongoose.model('Review', ReviewSchema);
+const Review = mongoose.model('Review', ReviewSchema);
 module.exports = Review;
